@@ -1,0 +1,43 @@
+ 
+<div class="ui  container segment" style=" ">
+
+
+     <div class="ui secondary pointing menu">
+        <div class=" menu menu-main">
+
+
+
+            <!-- menu de inicio -->
+            <a href="<%= @URL_DOMAIN %>" title="Inicio" class="item ventas_index"> <i class="icon home orange"></i> </a> 
+            
+            <a href="/cursos" title="Inicio" class="item ventas_index"> Cursos </a> 
+
+              <div class="ui item dropdown">
+                <div class="text"><i class="cogs icon orange"></i></div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a href=" " class="item proveedores_index">Tickets</a>
+                  
+                    <div class="item">
+                        <i class="dropdown icon"></i>
+                        SAT
+                        <div class="menu">
+                            <a href="<%= @URL_DOMAIN + "/sat/forma_pago" %>" class="item " >Forma de pago</a>
+                            <a href="<%= @URL_DOMAIN + "/sat/uso_cfdi" %>" class="item " >Uso CFDI</a>
+                            <a href="<%= @URL_DOMAIN + "/sat/productos_servicios" %>" class="item " >Productos Servicios</a>
+                            <a href="<%= @URL_DOMAIN + "/productos/umedidas" %>" class="item proveedores_index" data-turbolinks="false">Unidades de medida</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        // $(".<%= params[:controller].gsub(" / ","_") %>_<%= params[:action] %>").addClass("active");
+    });
+</script>

@@ -1,0 +1,25 @@
+<h1>Calificar tareas</h1>
+
+<table class="ui table very compact">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>No Control</th>
+            <th>Apellidos</th>
+            <th>Nombre</th>
+            <th>Calif</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($tareas as $t): ?>
+            <tr>
+                <td><?= $t->id ?></td>
+                <td><?= $t->no_control ?></td>
+                <td><?= $t->apellidos ?></td>
+                <td><?= $t->nombre ?></td>
+                <td><?= $t->calificacion ?></td> 
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+

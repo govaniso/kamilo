@@ -1,0 +1,24 @@
+<h1>Tareas</h1>
+
+SELECT COUNT(DISTINCT p.`title`) total,   u.id, u.`lastname`,u.`firstname`, p.`sent_date`, p.`title` FROM `c_student_publication` p
+INNER JOIN `user` u ON u.`id` = p.`user_id`
+WHERE p.`c_id` = 1 AND p.user_id IS NOT NULL AND p.`contains_file` = 1
+-- and p.`user_id` = 5
+ GROUP BY p.`user_id`
+
+<table class="ui table very compact">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Curso</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($tareas as $t): ?>
+        <tr>
+             <td><?= $t->id ?></td>
+            <td> <a href="/kamilo/cursos/calificar/<?= $curso_id,"/",$t->id ?>"><?= $t->title ?></a> </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

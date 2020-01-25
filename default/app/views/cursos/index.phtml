@@ -1,0 +1,19 @@
+
+<h1>Cursos</h1>
+
+<table class="ui table very compact">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Curso</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ((new Cursos())->find() as $c): ?>
+            <tr>
+                <td><?= $c->id ?></td>
+                <td> <a href="/kamilo/cursos/show/<?= $c->id ?>"> <?= $c->name ?></a></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
