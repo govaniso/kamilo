@@ -1,12 +1,8 @@
+<?php View::partial("menu"); ?>
+
 <h1>Tareas</h1>
 
-SELECT COUNT(DISTINCT p.`title`) total,   u.id, u.`lastname`,u.`firstname`, p.`sent_date`, p.`title` FROM `c_student_publication` p
-INNER JOIN `user` u ON u.`id` = p.`user_id`
-WHERE p.`c_id` = 1 AND p.user_id IS NOT NULL AND p.`contains_file` = 1
--- and p.`user_id` = 5
- GROUP BY p.`user_id`
-
-<table class="ui table very compact">
+<table class="table">
     <thead>
         <tr>
             <th>Id</th>

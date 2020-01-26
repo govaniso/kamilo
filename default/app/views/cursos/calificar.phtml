@@ -1,25 +1,75 @@
+<h1><?= $curso->name ?></h1>
+
 <h1>Calificar tareas</h1>
 
-<table class="ui table very compact">
-    <thead>
+
+<a href="<?= URL ?>/cursos/tareas/<?= $curso->id?>">Tareas</a>
+
+<div id="app_calificar">
+    <table class="ui table very compact">
+        <thead>
         <tr>
             <th>Id</th>
+            <th>sent_date</th>
             <th>No Control</th>
-            <th>Apellidos</th>
-            <th>Nombre</th>
+            <th>Alumno</th>
             <th>Calif</th>
         </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($tareas as $t): ?>
-            <tr>
-                <td><?= $t->id ?></td>
-                <td><?= $t->no_control ?></td>
-                <td><?= $t->apellidos ?></td>
-                <td><?= $t->nombre ?></td>
-                <td><?= $t->calificacion ?></td> 
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <tr v-for="i in items">
+            <td> {{i.id}}</td>
+            <td> {{i.sent_date}}</td>
+            <td> {{i.official_code}}</td>
+            <td> {{i.apellidos}} {{i.nombre}}</td>
+            <td>
+
+                <div class="input" style="max-width: 100px;">
+                    <input type="text"
+                           v-model="i.qualification"
+                           style="max-width: 80px;"
+                           data-role="input"
+                           data-custom-buttons="customButtons"
+                           data-role-input="true" class="">
+
+                    <div class="button-group">
+                        <button class="button input-custom-button success" v-bind:id="'g'+i.id" @click="guardar(i)"
+                                tabindex="-1"
+                                type="button">
+                            <span class="mif-cloud-upload"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="application/javascript">
+    var app_calificar = new Vue({
+        el: '#app_calificar',
+        data: {
+            items: <?= json_encode($tareas) ?>
+        },
+        methods: {
+            guardar: function (i) {
+                $("#g" + i.id).addClass("disabled");
+                axios.post(URL + "/tareas/calificar/" + i.c_id + "/" + i.id, {
+                    qualification: i.qualification,
+                    item: i
+                }).then(function (response) {
+                    i.sent_date = response.data.sent_date;
+                    i.id = response.data.id;
+                    $("#g" + i.id).removeClass("disabled");
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    })
+
+
+</script>
 
