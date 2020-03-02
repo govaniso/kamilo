@@ -327,26 +327,27 @@ class KumbiaView
      * @param  string            $group   grupo de cache
      * @return void
      */
-    public static function partial($partial, $__time = '', $params = null, $group = 'kumbia.partials')
-    {
+		public static function partial($partial, $__time = '', $params = null, $group = 'kumbia.partials') {
         if (PRODUCTION && $__time && !Cache::driver()->start($__time, $partial, $group)) {
             return;
         }
+				$partial_existe = false;
+
 
         //Verificando el partials en el dir app
         $__file = APP_PATH."views/$partial.phtml";
  
-        if (!is_file($__file)) {
-            
-        } else {
-            
+				if (is_file($__file)) {
+						$partial_existe = true;
         }
         
+				if (!$partial_existe){
         $__file = APP_PATH."views/_shared/partials/$partial.phtml";
         if (!is_file($__file)) {
             //Verificando el partials en el dir core
             $__file = CORE_PATH."views/partials/$partial.phtml";
         }
+				}
 
         if ($params) {
             if (is_string($params)) {
