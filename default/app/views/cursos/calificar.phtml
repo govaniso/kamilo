@@ -1,18 +1,15 @@
-<h1><?= $curso->name ?></h1>
+<?php View::partial("cursos/_menu", false, array("curso" => $curso)); ?>
 
-<h1>Calificar tareas</h1>
-
-
-<a href="<?= URL ?>/cursos/tareas/<?= $curso->id?>">Tareas</a>
+<h3>Calificar tareas</h3>
 
 <div id="app_calificar">
-    <table class="ui table very compact">
+    <table class="ui table very compact row-hover">
         <thead>
         <tr>
             <th>Id</th>
             <th>sent_date</th>
             <th>No Control</th>
-            <th>Alumno</th>
+            <th class="sortable-column sort-asc">Alumno</th>
             <th>Calif</th>
         </tr>
         </thead>

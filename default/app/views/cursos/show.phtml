@@ -1,5 +1,4 @@
-<h1>Curso: <?= $curso->name ?></h1>
+<?php View::partial("cursos/_menu", false, array("curso" => $curso)); ?>
 
-<a href="<?= URL, "/cursos/tareas/", $curso->id ?>">Tareas</a>
 
  

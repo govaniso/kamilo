@@ -1,41 +1,10 @@
- 
-<div class="ui  container segment" style=" ">
+<h1>Curso: <?= $curso->id ?>| <?= $curso->name ?></h1>
+
+<ul class="h-menu">
+    <li><a href="<?= URL ?>/cursos/tareas/<?= $curso->id ?>" title="Inicio" class="item ventas_index"> Tareas </a></li>
+    <li><a href="<?= URL ?>/cursos/alumnos/<?= $curso->id ?>" title="Inicio" class="item ventas_index"> Alumnos </a></li>
+    <li><a href="<?= URL, "/asistencia/pasa_lista/{$curso->id}/0/", date("Y-m-d") ?>" title="Asistencia" class="item "> Asistencia </a></li>
+</ul>
 
 
-    <div class="ui secondary pointing menu">
-        <div class=" menu menu-main">
-
-
-             <a href="<?= URL ?>cursos/tareas/<?= $curos->id ?>" title="Inicio" class="item ventas_index"> Tareas </a> 
-             <a href="<?= URL ?>cursos/alumnos/<?= $curos->id ?>" title="Inicio" class="item ventas_index"> Alumnos </a> 
-
-            <div class="ui item dropdown">
-                <div class="text"><i class="cogs icon orange"></i></div>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a href=" " class="item proveedores_index">Tickets</a>
-
-                    <div class="item">
-                        <i class="dropdown icon"></i>
-                        SAT
-                        <div class="menu">
-                            <a href="<%= @URL_DOMAIN + "/sat/forma_pago" %>" class="item " >Forma de pago</a>
-                            <a href="<%= @URL_DOMAIN + "/sat/uso_cfdi" %>" class="item " >Uso CFDI</a>
-                            <a href="<%= @URL_DOMAIN + "/sat/productos_servicios" %>" class="item " >Productos Servicios</a>
-                            <a href="<%= @URL_DOMAIN + "/productos/umedidas" %>" class="item proveedores_index" data-turbolinks="false">Unidades de medida</a>
-
-                        </div>
-                    </div>
-                </div>
-            </div> 
-
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $('document').ready(function () {
-        // $(".<%= params[:controller].gsub(" / ","_") %>_<%= params[:action] %>").addClass("active");
-    });
-</script>
 
