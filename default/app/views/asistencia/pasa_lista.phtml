@@ -1,0 +1,83 @@
+<?php View::partial("cursos/_menu", false, array("curso" => $curso)); ?>
+
+<h3>Pase de lista</h3>
+
+<div id="app_asistencia">
+    <div class="row">
+        <div class="cell-3 offset-1">
+            <div>
+                <div class="form-group">
+                    <label>BarCode</label>
+                    <input type="email" v-on:keyup.13="asistencia" id="barcode" v-model="no_control"/>
+                </div>
+            </div>
+        </div>
+        <div class="cell-3">
+            <ul data-role="list">
+                <li>{{ alumno.username }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <table class="table" >
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>No Control</th>
+                <th>Apellidos</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-bind:class="(a.asistio)? 'primary' : '' " v-for="a in alumnos">
+                <td >{{ a.id }}</td>
+                <td>{{ a.official_code }}</td>
+                <td>{{ a.lastname }}</td>
+                <td>{{ a.firstname }}</td>
+                <td>{{ a.asistio }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script type="application/javascript">   
+    var app_asistencia = new Vue({
+        el: '#app_asistencia',
+        data: {
+            items: <?= json_encode($alumnos) ?>,
+            no_control: "",
+            alumnos: {},
+            alumno: {},
+        },
+        mounted: function () {
+           this.get_alumnos();
+        },
+        methods: {
+            get_alumnos: function(){
+                 este = this;
+            axios.post(URL + "/asistencia/get_lista/<?= $curso->id, "/", date("Y-m-d") ?>", {
+                   x: "x"
+                }).then(function (response) {
+                    este.alumnos = response.data
+                });
+            },
+            asistencia: function () {
+                este = this;
+                this.alumno.username = "Cargando ....";
+                axios.post(URL + "/asistencia/check/<?= $asistencia->id ?>/" + this.no_control, {
+                    user: this.no_control
+                }).then(function (response) {
+                    este.no_control = "";
+                    este.alumno = response.data
+                    $("#barcode").focus();
+                    este.get_alumnos();
+                }).catch(function (error) {
+                    este.no_control = "";
+                });
+            }
+        }
+    })
+    
+</script>
+

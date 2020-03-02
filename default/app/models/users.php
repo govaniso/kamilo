@@ -1,6 +1,6 @@
 <?php
 
 
-class Users {
+class Users  extends  ActiveRecord {
 		public $source = "user";
 }

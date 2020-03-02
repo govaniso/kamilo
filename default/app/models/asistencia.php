@@ -11,121 +11,44 @@
  *
  * @author govani
  */
-class Cursos extends ActiveRecord {
-		//put your code here
-		public $source = "gradebook_category";
+class Asistencia extends ActiveRecord {
 
+    //put your code here
+    public $source = "k_asistencia";
+    public $logger = true;
 
-		/*
-		 * Retorna la lista de los alumnos inscritos en el curso
-		*/
-		public function get_alumnos() {
-				//Tomado del log de mysql, cuando consultamos los usuatios del curso
-				$sql = "SELECT DISTINCT course_rel_user.status AS status_rel,
-																user.id,
-																user.official_code as no_control,  
-																user.lastname AS apellidos, 
-																user.firstname AS nombre,                        
-                                user.id AS user_id,
-                                user.email,
-                                course_rel_user.is_tutor,
-                                user.*  
-                                FROM user AS user 
-                      LEFT JOIN course_rel_user AS course_rel_user
-                      ON  user.id = course_rel_user.user_id AND course_rel_user.relation_type <> 1
-                       INNER JOIN course course 
-                       ON course_rel_user.c_id = course.id  
-                       AND course_rel_user.c_id = $this->id 
-                       WHERE  course_rel_user.status = 5 
-                       AND   course_rel_user.c_id IS NOT NULL  ORDER BY user.lastname, user.firstname";
+    public function after_create() {
+        $curso = ( new Cursos())->find_first($this->c_id);
 
-				return $this->find_all_by_sql($sql);
-		}
+        $alumnos = $curso->get_alumnos();
+        foreach ($alumnos as $a):
+            $item = new AsistenciaItems();
+            $item->a_id = $this->id;
+            $item->user_id = $a->id;
+            $item->save();
+        endforeach;
+    }
+    
+    public function get_lista($c_id, $fecha){
+        $sql = "SELECT u.`official_code`,  u.`firstname`, u.`lastname`, ai.`asistio` FROM `k_asistencia` a
+                        INNER JOIN `k_asistencia_items` ai ON ai.`a_id` = a.`id`
+                        INNER JOIN `user` u ON u.`id` = ai.user_id
+                        WHERE DATE_FORMAT( a.`fecha`, '%Y-%m-%d') = '$fecha'
+                                        AND a.`c_id` = $c_id";
+       return (new Asistencia())->find_all_by_sql($sql);
+    }
 
-		/*
-		 * Devuelve todas las tareas de los alumnos y tambien de quienes no la enviaron
-		 *
-		 */
-		function get_tareas($tarea_id) {
-
-				$sql = "SELECT DISTINCT
-                        u.user_id,
-                        work.id AS id,   
-                        work.c_id,                     
-                        title AS title,
-                        description,
-                        url,
-                        sent_date,
-                        contains_file,
-                        has_properties,
-                        view_properties,
-                        qualification,
-                        weight,
-                        allow_text_assignment,
-                        u.firstname as nombre,
-                        u.lastname as apellidos,
-                        u.username,
-                        u.official_code,
-                        parent_id,
-                        accepted,
-                        qualificator_id,
-                        url_correction,
-                        title_correction
-                        
-                FROM c_student_publication work 
-                INNER JOIN user u  
-                ON (work.user_id = u.user_id)
-                WHERE
-                    work.c_id = $this->id AND
-                     (work.post_group_id = '0' OR work.post_group_id IS NULL)  AND work.active IN (0, 1)  AND parent_id  = $tarea_id  
-                     
-                     AND  (work.session_id = 0 OR work.session_id IS NULL)
-                    AND u.status != 20
-                ORDER BY lastname, firstname ASC";
-
-				$tareas = $this->find_all_by_sql($sql);
-
-				$ids = [];
-				foreach ($tareas as $t) {
-						$ids[] = $t->user_id;
-				}
-
-				$sql = "SELECT
-												u.user_id,
-												NULL AS id,   
-												$this->id AS c_id,                     
-												title AS title,
-												'' AS   description,
-												NULL AS    url,
-												NULL AS   sent_date,
-												NULL AS  contains_file,
-												NULL AS  has_properties,
-												NULL AS  view_properties,
-												0 AS  qualification,
-												NULL AS  weight,
-												NULL AS allow_text_assignment,
-												u.firstname AS nombre,
-												u.lastname AS apellidos,
-												u.username,
-												u.official_code,
-												$tarea_id AS parent_id,
-												NULL AS accepted,
-												NULL AS qualificator_id,
-												NULL AS url_correction,
-												NULL AS title_correction 
-                    FROM `user` AS u 
-                      LEFT JOIN course_rel_user AS course_rel_user
-                      ON  u.id = course_rel_user.user_id AND course_rel_user.relation_type <> 1
-                       INNER JOIN course course 
-                       ON course_rel_user.c_id = course.id  
-                       AND course_rel_user.c_id = $this->id
-                       WHERE  course_rel_user.status = 5 
-                       AND   course_rel_user.c_id IS NOT NULL   
-                       AND u.`id` NOT IN (".implode(",", $ids).")
-                    ORDER BY u.lastname, u.firstname   ";
-
-				$alumnos_sin_tareas = $this->find_all_by_sql($sql);
-				return array_merge($tareas, $alumnos_sin_tareas);
-		}
+    public function get_asistencia($c_id, $g_id, $fecha) {
+        $asistencia = (new Asistencia())->find_first("c_id = $c_id AND DATE_FORMAT(fecha, '%Y-%m-%d') = '$fecha'");
+        if ($asistencia) {
+            return $asistencia;
+        } else {
+            $asistencia = new Asistencia();
+            $asistencia->fecha = $fecha;
+            $asistencia->c_id = $c_id;
+            $asistencia->save();
+        }
+        return (new Asistencia())->find_first("c_id = $c_id AND DATE_FORMAT(fecha, '%Y-%m-%d') = '$fecha'");
+    }
 
 }

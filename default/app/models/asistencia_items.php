@@ -11,17 +11,10 @@
  *
  * @author govani
  */
-class Asistencia extends ActiveRecord {
+class AsistenciaItems extends ActiveRecord {
 		//put your code here
-		public $source = "k_asistencia";
+		public $source = "k_asistencia_items";
 
-		public function after_create() {
-				$curso = ( new Cursos() )->find($this->c_id);
 
-				$alumnos = $curso->get_alumnos();
-				foreach ($alumnos as $a):
-						
-				endforeach;
-		}
 
 }
