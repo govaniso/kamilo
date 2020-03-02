@@ -12,15 +12,15 @@ return [
         /**
          * username: usuario con permisos en la base de datos
          */
-        'username' => 'morgana', //no es recomendable usar el usuario root
+        'username' => 'academy', //no es recomendable usar el usuario root
         /**
          * password: clave del usuario de la base de datos
          */
-        'password' => 'kasandra',
+        'password' => 'qS3)cip!49',
         /**
          * test: nombre de la base de datos
          */
-        'name'     => 'kamilo',
+        'name'     => 'academy',
         /**
          * type: tipo de motor de base de datos (mysql, pgsql, oracle o sqlite)
          */
