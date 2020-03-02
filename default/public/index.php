@@ -57,7 +57,7 @@ const PRODUCTION = false;
 define('APP_PATH', dirname(__DIR__).'/app/');
 //const APP_PATH = '/path/to/app/';
 
-define('URL', 'http://localhost:8080/kamilo');
+define('URL', 'https://academy.soyprogramador.liz.mx/kamilo');
 /*
  * Define el CORE_PATH
  *
